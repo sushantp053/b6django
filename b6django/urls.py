@@ -10,4 +10,6 @@ urlpatterns = [
     path("home", home, name="home"),
     path("about", about, name="about"),
     path("login", loginPage, name="login"),
+    path('loginUser', handleLogin),
+    path('logoutUser', logoutUser)
 ]

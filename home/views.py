@@ -29,7 +29,10 @@ def handleLogin(request):
             login(request,user)
             return render(request, "home.html")
         else :
-            return render(request, "login.html")
+            message = {"error": "Invalid Credintials"}
+            return render(request, "login.html", context= message)
+        
+    return render(request, "error.html")
 
 def logoutUser(request):
     logout(request)

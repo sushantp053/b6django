@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class Post(models.Model):
     post_id = models.BigAutoField(primary_key = True)
-    image = models.ImageField()
+    image = models.ImageField(upload_to="posts/")
     text = models.TextField()
     user_id = models.ForeignKey(User, on_delete = models.CASCADE)
     posted_at = models.DateTimeField()

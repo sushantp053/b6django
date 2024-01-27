@@ -1,11 +1,15 @@
-from django.shortcuts import render, HttpResponse
+import datetime
+from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from home.models import *
 
 @login_required
 def home(request):
 
-    return render(request, "home.html")
+    post = Post.objects.all()
+    p = {'posts': post}
+    return render(request, "home.html", context= p)
 
 @login_required
 def about(request):
@@ -38,5 +42,35 @@ def logoutUser(request):
     logout(request)
     return render(request, "login.html")
 
+@login_required
+def createPost(request):
+
+    if(request.method == "POST"):
+        img = request.FILES['image']
+        text = request.POST.get('text')
+        location = request.POST.get('location')
+
+        post = Post()
+        post.image = img
+        post.text = text
+        post.user_id = request.user
+        post.posted_at = datetime.datetime.now()
+        post.location = location
+        post.save()
+        # p1 = Post(
+        #     image = img,
+        #     text = text,
+        #     user_id = request.user,
+        #     posted_at = datetime.now(),
+        #     location = location
+        # )
+        # p1.save()
+
+        return redirect("home")
     
+    if(request.method == "GET"):
+        return render(request, "createPost.html")
+
+    return render(request, "createPost.html")
+
 

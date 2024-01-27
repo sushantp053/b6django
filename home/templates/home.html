@@ -10,9 +10,19 @@
 </head>
 <body>
     <h1>Welcome to the home page</h1>
+    <a href="/createPost">Create Post</a>
     <a href="/login">About</a>
     <a href="/logoutUser">Logout</a>
 
+    <hr>
+
+    {% for post in posts %}
+    <img src="../media/{{ post.image }}" height = "100px" width = "100px" />
+    <p> {{ post.text }} </p>
+    <p> {{ post.posted_at }} </p>
+    <p> {{ post.location }} </p>
+    <hr>
+    {% endfor %}
     
 </body>
 </html>

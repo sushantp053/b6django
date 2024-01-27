@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Post</title>
+    <link
+        rel="stylesheet"
+        href="../static/cp.css"/>
+</head>
+<body>
+
+    <h1> Create New Post </h1>
+    <form action="/createPost" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="image">Image</label>
+        <input type="file" name="image" id="image"required/>
+        <label for="text">Post Message</label>
+        <input type="text" name="text" id="text">
+        <label for="location">Location</label>
+        <input type="text" name="location" id="location"/>
+        <input type="submit" value="Create Post"/>
+    </form>
+</body>
+</html>

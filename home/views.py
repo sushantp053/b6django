@@ -7,7 +7,8 @@ from home.models import *
 @login_required
 def home(request):
 
-    post = Post.objects.all()
+    # post = Post.objects.all().order_by('-posted_at')
+    post = Post.objects.filter(user_id = request.user.id).order_by('-posted_at')
     p = {'posts': post}
     return render(request, "home.html", context= p)
 
@@ -31,7 +32,11 @@ def handleLogin(request):
         if user:
             # User is authenticated
             login(request,user)
-            return render(request, "home.html")
+            return redirect("/home")
+            # post = Post.objects.filter(user_id = request.user.id).order_by('-posted_at')
+            # p = {'posts': post}
+            
+            # return render(request, "home.html", p)
         else :
             message = {"error": "Invalid Credintials"}
             return render(request, "login.html", context= message)

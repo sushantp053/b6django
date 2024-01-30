@@ -10,17 +10,17 @@ class Post(models.Model):
     location = models.TextField()
 
     def __str__(self) -> str:
-        return self.text + self.location
+        return self.text + str(self.user_id.pk)
 
 class Comments(models.Model):
-    comment_id = models.IntegerField(primary_key = True)
+    comment_id = models.BigAutoField(primary_key = True)
     post_id = models.ForeignKey(Post, on_delete = models.CASCADE)
     user_id = models.ForeignKey(User, on_delete= models.DO_NOTHING)
     comment = models.TextField()
     commented_at = models.DateTimeField()
 
 class Like(models.Model):
-    like_id = models.IntegerField(primary_key = True)
+    like_id = models.BigAutoField(primary_key = True)
     post_id = models.ForeignKey(Post, on_delete = models.CASCADE)
     user_id = models.ForeignKey(User, on_delete= models.DO_NOTHING)
     liked_at= models.DateTimeField()
@@ -30,3 +30,8 @@ class ComComment(models.Model):
     comment_id = models.ForeignKey(Comments, on_delete = models.CASCADE )
     comment = models.TextField()
     user_id = models.ForeignKey(User, on_delete = models.DO_NOTHING)
+
+
+class Friend(models.Model):
+    user_id = models.ForeignKey(User, on_delete = models.CASCADE)
+    friend_id = models.ManyToManyField(User, related_name = "friends")

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+
+    {% if error %}
+    <div id="error">
+    <p> {{ error }} </p>
+    </div>
+    {% endif %}
+    <h1> Register </h1>
+    <form action="/register" method="post">
+        {% csrf_token %}
+       <label for="firstname">First name</label>
+        <input type="text" name="firstname" id="firstname" value="{{ firstname }}" required/>
+        <label for="lastname">Last name</label>
+        <input type="text" name="lastname" id="lastname" value="{{ lastname }}" required/>
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" value="{{ username }}" required/>
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" value="{{ email }}" required/>
+        <label for="phone">Phone</label>
+        <input type="text" name="phone" id="phone" value="{{ phone }}" required/>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required/>
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" name="confirmPassword" id="confirmPassword" required/>
+        <input type="submit" value="Register"/>
+    </form>
+    <p> Already have account <a href="/login">Login</a> </p>
+</body>
+</html>

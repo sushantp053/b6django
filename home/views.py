@@ -43,6 +43,54 @@ def handleLogin(request):
         
     return render(request, "error.html")
 
+def error(request):
+    return render(request, "error.html")
+
+def register(request):
+    if(request.method == "POST"):
+        firstname = request.POST.get('firstname')
+        lastname = request.POST.get('lastname')
+        userName = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        confirmPassword = request.POST.get('confirmPassword')
+        phone = request.POST.get('phone')
+
+        if password == confirmPassword:
+            try:
+                user = User.objects.create_user(userName, email, password)
+                user.first_name = firstname
+                user.last_name = lastname
+                user.save()
+            except Exception as e:
+                print(e)
+                user = {"error": "Username already exists",
+                    "firstname": firstname, 
+                    "lastname" : lastname,
+                    "email" :email, 
+                    "phone" : phone}
+                return render(request, "register.html", context = user)
+
+            profile = Profile.objects.create(user_id = user)
+            profile.phone = phone
+            profile.save()
+
+            return redirect("login")
+        else:
+            user = {"error": "Password and Confirm Password does not match",
+                    "firstname": firstname, 
+                    "lastname" : lastname,
+                    "username" : userName, 
+                    "email" :email, 
+                    "phone" : phone}
+        
+            return render(request, "register.html", context = user)
+
+    elif(request.method == "GET"):
+        return render(request, "register.html")
+    else:
+        return redirect("/error")
+
 def logoutUser(request):
     logout(request)
     return render(request, "login.html")
@@ -77,5 +125,3 @@ def createPost(request):
         return render(request, "createPost.html")
 
     return render(request, "createPost.html")
-
-

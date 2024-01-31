@@ -35,3 +35,9 @@ class ComComment(models.Model):
 class Friend(models.Model):
     user_id = models.ForeignKey(User, on_delete = models.CASCADE)
     friend_id = models.ManyToManyField(User, related_name = "friends")
+
+class Profile(models.Model):
+    user_id = models.ForeignKey(User, on_delete = models.CASCADE)
+    image = models.ImageField(upload_to="profile/")
+    phone = models.TextField()
+    addrss = models.TextField()

@@ -124,7 +124,7 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-LOGIN_URL = "/login"
+LOGIN_URL = "login"
 
 MEDIA_ROOT = BASE_DIR / "media"
 

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Friend</title>
+    <link rel="stylesheet" href="../static/addfriend.css">
+</head>
+<body>
+{% load static %}
+{% csrf_token %}
+    <h1> Add Friend </h1>
+   {% for nf in notFriend %}
+   <div class="notFriend" id = "nf_{{ nf.id }}">
+    <p> {{ nf }} </p>
+    <button onclick="addFriend({{ nf.id }})">Add Friend</button>
+   </div> 
+{% endfor %}
+    
+<script src="{% static "/addfriend.js" %}"></script>
+</body>
+</html>

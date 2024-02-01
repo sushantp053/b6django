@@ -33,8 +33,8 @@ class ComComment(models.Model):
 
 
 class Friend(models.Model):
-    user_id = models.ForeignKey(User, on_delete = models.CASCADE)
-    friend_id = models.ManyToManyField(User, related_name = "friends")
+    user = models.ForeignKey(User, related_name = "off", on_delete = models.CASCADE)
+    friend= models.ForeignKey(User, related_name = "friends", on_delete = models.CASCADE)
 
 class Profile(models.Model):
     user_id = models.ForeignKey(User, on_delete = models.CASCADE)

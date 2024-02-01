@@ -1,14 +1,18 @@
 import datetime
+from django.http import JsonResponse
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from home.models import *
+import json
 
 @login_required
 def home(request):
 
     # post = Post.objects.all().order_by('-posted_at')
-    post = Post.objects.filter(user_id = request.user.id).order_by('-posted_at')
+    freinds  = Friend.objects.filter(user = request.user.id)
+    post = Post.objects.filter(user_id__in = [i.friend for i in freinds]).order_by('-posted_at')
+    # post = Post.objects.filter(user_id = request.user.id).order_by('-posted_at')
     p = {'posts': post}
     return render(request, "home.html", context= p)
 
@@ -100,6 +104,7 @@ def createPost(request):
 
     if(request.method == "POST"):
         img = request.FILES['image']
+        # imag = request.FILES.get('image')
         text = request.POST.get('text')
         location = request.POST.get('location')
 
@@ -125,3 +130,37 @@ def createPost(request):
         return render(request, "createPost.html")
 
     return render(request, "createPost.html")
+
+
+def addFriend(request):
+
+    if(request.method == "POST"):
+        data = json.loads(request.body)
+        print(request.POST)
+        fid = data.get('id')
+        print(fid)
+        print(request.user.id)
+    
+        friend = Friend.objects.create(user = User.objects.get(pk = request.user.id), friend = User.objects.get(pk = fid))
+
+        # friend.friend.set(User.objects.get(pk = fid)) 
+        # friend.user.set(User.objects.get(pk = request.user.id))
+        # friend.friend = User.objects.get(pk = fid)
+        # friend.save()
+
+        return JsonResponse({'message': 'Item deleted successfully'})
+    # except Exception as e:
+    #     return JsonResponse({'message': f'Error deleting item: {str(e)}'}, status=500)
+    
+
+    if(request.method == "GET"):
+
+        freinds  = Friend.objects.filter(user_id = request.user.id)
+
+        notFriend = User.objects.exclude(friends = request.user.id)
+
+        print(notFriend)
+
+        return render(request, "addFriend.html" , {'freinds': freinds, 'notFriend': notFriend})
+
+    return render(request, "addFriend.html")

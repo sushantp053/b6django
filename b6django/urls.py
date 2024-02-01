@@ -17,4 +17,5 @@ urlpatterns = [
     path('createPost', createPost),
     path('register', register),
     path('error', error),
+    path('addFriend', addFriend),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

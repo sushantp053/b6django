@@ -1,0 +1,9 @@
+
+.notFriend{
+    width: 500px;
+    margin: auto;
+    margin-top: 10px;
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 1em;
+}

@@ -18,4 +18,7 @@ urlpatterns = [
     path('register', register),
     path('error', error),
     path('addFriend', addFriend),
+    path('post/<int:post_id>', post),
+    path('comment/<int:post_id>', comment),
+
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

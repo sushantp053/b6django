@@ -11,7 +11,7 @@ def home(request):
 
     # post = Post.objects.all().order_by('-posted_at')
     freinds  = Friend.objects.filter(user = request.user.id)
-    post = Post.objects.filter(user_id__in = [i.friend for i in freinds]).order_by('-posted_at')
+    post = Post.objects.filter(user_id__in = [i.friend for i in freinds]+[request.user.id]).order_by('-posted_at')
     # post = Post.objects.filter(user_id = request.user.id).order_by('-posted_at')
     p = {'posts': post}
     return render(request, "home.html", context= p)
@@ -135,32 +135,36 @@ def createPost(request):
 def addFriend(request):
 
     if(request.method == "POST"):
-        data = json.loads(request.body)
-        print(request.POST)
-        fid = data.get('id')
-        print(fid)
-        print(request.user.id)
-    
-        friend = Friend.objects.create(user = User.objects.get(pk = request.user.id), friend = User.objects.get(pk = fid))
-
-        # friend.friend.set(User.objects.get(pk = fid)) 
-        # friend.user.set(User.objects.get(pk = request.user.id))
-        # friend.friend = User.objects.get(pk = fid)
-        # friend.save()
-
-        return JsonResponse({'message': 'Item deleted successfully'})
-    # except Exception as e:
-    #     return JsonResponse({'message': f'Error deleting item: {str(e)}'}, status=500)
+        try:
+            data = json.loads(request.body)
+            fid = data.get('id')
+            Friend.objects.create(user = User.objects.get(pk = request.user.id), friend = User.objects.get(pk = fid))
+            return JsonResponse({'message': 'Friend added successfully'})
+        except Exception as e:
+            return JsonResponse({'message': f'Error deleting item: {str(e)}'}, status=500)
     
 
     if(request.method == "GET"):
 
         freinds  = Friend.objects.filter(user_id = request.user.id)
 
-        notFriend = User.objects.exclude(friends = request.user.id)
+        notFriend = User.objects.exclude( id__in = [i.friend_id for i in freinds]+[request.user.id])
 
         print(notFriend)
 
         return render(request, "addFriend.html" , {'freinds': freinds, 'notFriend': notFriend})
 
     return render(request, "addFriend.html")
+
+def post(request, post_id):
+    post = Post.objects.get(pk = post_id)
+    comments = Comments.objects.filter(post_id = post_id).order_by('-commented_at')
+    return render(request, "post.html", {'post': post, 'comments': comments})
+
+def comment(request, post_id):
+    if(request.method == "POST"):
+        comment = request.POST.get('text')
+        user = request.user
+        post = Post.objects.get(pk = post_id)
+        Comments.objects.create(comment = comment, user_id = user, post_id = post, commented_at= datetime.datetime.now())
+        return redirect("/post/"+ str(post_id))

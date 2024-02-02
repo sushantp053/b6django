@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post</title>
+</head>
+<body>
+    
+    <h1> Post </h1>
+    <p> {{ post.user_id }} </p>
+    <img src="../media/{{ post.image }}" height = "100px" width = "100px" />
+    <p> {{ post.text }} </p>
+    <p> {{ post.posted_at }} </p>
+    <p> {{ post.location }} </p>
+
+    <h2> Comments </h2>
+
+    <form action="/comment/{{ post.post_id }}" method="post">
+        {% csrf_token %}
+        <label for="text">Comment</label>
+        <input type="text" name="text" id="text">
+        <input type="submit" value="Comment">
+    </form>
+    {% for comment in comments %}
+    <div>
+    <p> {{ comment.user_id }} </p>
+    <p> {{ comment.comment }} </p>
+    <p> {{ comment.commented_at }} </p>
+    <hr>
+    </div>
+    {% endfor %}
+
+</body>
+</html>

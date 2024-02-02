@@ -17,11 +17,16 @@
     <hr>
 
     {% for post in posts %}
+    <a href="/post/{{ post.post_id }}">
+    <div>
+    <p> {{ post.user_id }} </p>
     <img src="../media/{{ post.image }}" height = "100px" width = "100px" />
     <p> {{ post.text }} </p>
     <p> {{ post.posted_at }} </p>
     <p> {{ post.location }} </p>
     <hr>
+    </div>
+</a>
     {% endfor %}
     
 </body>

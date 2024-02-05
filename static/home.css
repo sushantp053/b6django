@@ -3,3 +3,28 @@ h1{
     background-color: azure;
     text-align: center;
 }
+
+.post{
+    margin: 0 auto;
+    width: 400px;
+    height: auto;
+    padding: 1em;
+    border: 1px solid #CCC;
+    border-radius: 1em;
+}
+
+.post img{
+    width: 400px;
+}
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
+.liked{
+    color: red;
+}
+.dislike{
+    color: gray;
+}

@@ -20,5 +20,6 @@ urlpatterns = [
     path('addFriend', addFriend),
     path('post/<int:post_id>', post),
     path('comment/<int:post_id>', comment),
+    path('likePost', likePost),
 
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -11,9 +11,12 @@ def home(request):
 
     # post = Post.objects.all().order_by('-posted_at')
     freinds  = Friend.objects.filter(user = request.user.id)
+    likes = Like.objects.filter(user_id = request.user.id)
+    likedPostId = [i.post_id.post_id for i in likes]
+    print(likedPostId)
     post = Post.objects.filter(user_id__in = [i.friend for i in freinds]+[request.user.id]).order_by('-posted_at')
     # post = Post.objects.filter(user_id = request.user.id).order_by('-posted_at')
-    p = {'posts': post}
+    p = {'posts': post, 'likes': likedPostId}
     return render(request, "home.html", context= p)
 
 @login_required
@@ -168,3 +171,20 @@ def comment(request, post_id):
         post = Post.objects.get(pk = post_id)
         Comments.objects.create(comment = comment, user_id = user, post_id = post, commented_at= datetime.datetime.now())
         return redirect("/post/"+ str(post_id))
+    
+
+def likePost(request):
+
+    if(request.method == "POST"):
+        # try:
+            data = json.loads(request.body)
+            pid = data.get('postid')
+            try:
+                like = Like.objects.get(post_id = Post.objects.get(pk = pid, user_id = User.objects.get(pk = request.user.id)))
+                like.delete()
+                return JsonResponse({'message': 'Post unliked successfully'})
+            except Exception as e:
+                Like.objects.create(post_id = Post.objects.get(pk = pid), user_id = User.objects.get(pk = request.user.id), liked_at= datetime.datetime.now())
+                return JsonResponse({'message': 'Post liked successfully'})
+        # except Exception as e:
+        #     return JsonResponse({'message': f'Error: {str(e)}'}, status=500)

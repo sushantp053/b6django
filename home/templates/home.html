@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link
-        rel="stylesheet"
-        href="../static/home.css"/>
+    <link rel="stylesheet" href="../static/home.css" />
+    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+
 </head>
+
 <body>
+    {% csrf_token %}
     <h1>Welcome to the home page</h1>
     <a href="/createPost">Create Post</a>
     <a href="/login">About</a>
@@ -17,17 +23,25 @@
     <hr>
 
     {% for post in posts %}
+        <div class="post">
+            
     <a href="/post/{{ post.post_id }}">
-    <div>
-    <p> {{ post.user_id }} </p>
-    <img src="../media/{{ post.image }}" height = "100px" width = "100px" />
-    <p> {{ post.text }} </p>
-    <p> {{ post.posted_at }} </p>
-    <p> {{ post.location }} </p>
-    <hr>
-    </div>
-</a>
-    {% endfor %}
+            <p> {{ post.user_id }} </p>
+            <img src="../media/{{ post.image }}" />
+            <p> {{ post.text }} </p>
+            <p> {{ post.posted_at }} </p>
+            <p> {{ post.location }} </p>
+        </a>
+            {% if post.post_id in likes %}
+            <i  id="like_{{ post.post_id }}" onclick="like({{ post.post_id }})" style="color: red;" class="fa-solid fa-heart"></i>
+            {% else %}
+            <i id="like_{{ post.post_id }}" onclick="like({{ post.post_id }})" style="color: gray;" class="fa-solid fa-heart"></i>
+            {% endif %}
+            <a href="/comment/{{ post.post_id }}" class="comment"> <i class="fa-solid fa-comment"></i> </a>
+        </div>
     
+    {% endfor %}
+<script src="{% static "/home.js" %}"></script>
 </body>
+
 </html>
